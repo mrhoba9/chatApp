@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 import logger from "./middlewares/logger.js";
 import errorHandler from "./middlewares/errorHandler.js";
 import connectDB from "./config/db.js";
-
+import authRouter from "./routes/auth.js";
 
 dotenv.config();
 
@@ -25,6 +25,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve("../dist")));
 app.use(cookieParser());
 app.use(logger);
+
+
+app.use("/api/auth", authRouter);
 
 
 
