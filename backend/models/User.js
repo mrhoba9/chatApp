@@ -32,16 +32,16 @@ const userSchema = new mongoose.Schema({
             privateKey: 'privA',
 
             friends: [
-                { publicKey: 'friendOneKey' },
-                { publicKey: 'friendTwoKey' }
+                { publicKey: 'friendOneKey', _id: ObjectId('idd')},
+                { publicKey: 'friendTwoKey', _id: ObjectId('idd')}
             ],
 
             incomingRequests: [
-                { publicKey: 'friendThreeKey' }
+                { publicKey: 'friendThreeKey', _id: ObjectId('idd')}
             ],
 
             outgoingRequests: [
-                { publicKey: 'friendFourKey' }
+                { publicKey: 'friendFourKey', _id: ObjectId('idd')}
             ]
         }
     ]

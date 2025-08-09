@@ -8,7 +8,6 @@ export default function verifyJWT(req, res, next){
 
         const secretKey = process.env.JWT_SECRET;
         const decoded = jwt.verify(token, secretKey, { issuer: "mrhoba9" });
-        console.log(decoded);
 
         req.user = {
             publicKey: decoded.publicKey,
