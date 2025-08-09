@@ -6,9 +6,18 @@ import mongoose from "mongoose";
             username: 'ahmed',
             publicKey: 'pubA',
             privateKey: 'privA',
+
             friends: [
-                { username: 'friends1', publicKey: 'friendOneKey' },
-                { username: 'friends1', publicKey: 'friendOneKey' }
+                { publicKey: 'friendOneKey' },
+                { publicKey: 'friendTwoKey' }
+            ],
+
+            incomingRequests: [
+                { publicKey: 'friendThreeKey', createdAt: ISODate("2025-08-09T12:00:00Z") }
+            ],
+
+            outgoingRequests: [
+                { publicKey: 'friendFourKey', createdAt: ISODate("2025-08-09T12:05:00Z") }
             ]
         }
     ]
@@ -18,10 +27,27 @@ const userSchema = new mongoose.Schema({
 	username: String,
 	publicKey: { type: String, unique: true },
 	privateKey: { type: String, unique: true },
+
+	// accepted
 	friends: [
 		{
-			username: String,
 			publicKey: String,
+		},
+	],
+
+	// requests received from others
+	incomingRequests: [
+		{
+			publicKey: String,
+			createdAt: { type: Date, default: Date.now },
+		},
+	],
+
+	// requests sent to others
+	outgoingRequests: [
+		{
+			publicKey: String,
+			createdAt: { type: Date, default: Date.now },
 		},
 	],
 });
