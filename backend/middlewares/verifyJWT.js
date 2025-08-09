@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import handleSendErrors from "../utils/handleSendErrors";
+import handleSendErrors from "../utils/handleSendErrors.js";
 
 export default function verifyJWT(req, res, next){
     try {
@@ -10,9 +10,9 @@ export default function verifyJWT(req, res, next){
         const decoded = jwt.verify(token, secretKey, { issuer: "mrhoba9" });
         console.log(decoded);
 
-        req.username = decoded.username;
-        req.publickey = decoded.publickey;
-
+        req.user = {
+            publicKey: decoded.publicKey,
+        };
         next();
     } catch (error) {
         if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError") return handleSendErrors("Invalid or expired token", false, 401, next);

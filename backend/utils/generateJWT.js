@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
-export default function generateJWT(username, publicKey){
-    const payload = { username, publicKey};
+export default function generateJWT(publicKey){
+    const payload = { publicKey };
 
     const secretKey = process.env.JWT_SECRET;
     const options = { expiresIn: "1h", issuer: "mrhoba9"};

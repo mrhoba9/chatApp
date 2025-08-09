@@ -8,6 +8,7 @@ import logger from "./middlewares/logger.js";
 import errorHandler from "./middlewares/errorHandler.js";
 import connectDB from "./config/db.js";
 import authRouter from "./routes/auth.js";
+import friends from "./routes/friends.js";
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use(logger);
 
 
 app.use("/api/auth", authRouter);
+app.use("/api/friends", friends);
 
 
 
