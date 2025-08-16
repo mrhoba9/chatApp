@@ -1,5 +1,7 @@
 import User from "../models/User.js";
+import Chat from "../models/Chat.js";
 import handleSendErrors from "../utils/handleSendErrors.js";
+import Message from "../models/Message.js";
 
 // POST /api/friends/request
 export const outgoingRequest = async (req, res, next) => {
@@ -61,7 +63,7 @@ export const incomingRequests = async (req, res, next) => {
     }
 }
 
-// POST /api/friends/approve
+// POST /api/friends/approve ## comming back later for creating chat also
 export const approveRequest = async (req, res, next) => {
     try {
         const userPublicKey = req.user.publicKey;
@@ -93,6 +95,17 @@ export const approveRequest = async (req, res, next) => {
 
         await user.save();
         await approvedUser.save();
+
+        let chat = await Chat.findOne({
+            participants: { $all: [userPublicKey, userApprovedPublicKey] }
+        });
+
+        if(!chat){
+            chat = new Chat({
+                participants: [userPublicKey, userApprovedPublicKey],
+            });
+            await chat.save();
+        }
 
         return res.json({ message: "Friend request approved", success: true });
     } catch (error) {
@@ -171,6 +184,14 @@ export const removeFriend = async (req, res, next) => {
 
         await user.save();
         await removeFriendUser.save();
+
+        const chat = await Chat.findOne({
+            participants: { $all: [userPublicKey, friendPublicKey]}
+        })
+        if(chat){
+            await Message.deleteMany({ chatId: chat.chatId});
+            await Chat.deleteOne({ chatId: chat.chatId});
+        }
 
         return res.json({ message: "Friend removed successfully", success: true });
     } catch (error) {
