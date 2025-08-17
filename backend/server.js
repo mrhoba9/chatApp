@@ -3,6 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+import http from "http";
 
 import logger from "./middlewares/logger.js";
 import errorHandler from "./middlewares/errorHandler.js";
@@ -10,6 +11,7 @@ import connectDB from "./config/db.js";
 import authRouter from "./routes/auth.js";
 import friends from "./routes/friends.js";
 import messages from "./routes/messages.js";
+import { initSocket } from "./socket/index.js";
 
 dotenv.config();
 
@@ -39,6 +41,13 @@ app.use("/api/message", messages);
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "../dist/index.html"));
 })
-
 app.use(errorHandler);
-app.listen(PORT, () => console.log(`Server is running on http://localhost:${PORT}`))
+
+// 👉 Create HTTP server
+const server = http.createServer(http);
+
+// 👉 Initialize sockets
+initSocket(server);
+server.listen(PORT, () => console.log(`Server + Socket running on http://localhost:${PORT}`));
+
+// app.listen(PORT, () => console.log(`Server is running on http://localhost:${PORT}`))

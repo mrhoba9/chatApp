@@ -2,6 +2,7 @@ import Chat from "../models/Chat.js";
 import Message from "../models/Message.js";
 import handleSendErrors from "../utils/handleSendErrors.js";
 import sanitizeHtml from "sanitize-html"; 
+import { getIO } from "../socket/index.js";
 
 // POST /api/message/send
 export const sendMessage = async (req, res, next) => {
@@ -35,6 +36,12 @@ export const sendMessage = async (req, res, next) => {
             text: cleanMessage,
         });
         await newMessage.save();
+
+        // 🔔 Emit via Socket.IO
+        const io = getIO();
+        io.to(userpk).emit("message_sent", newMessage);
+        io.to(respk).emit("receive_message", newMessage);
+
         return res.json({ success: true, message: newMessage });
     } catch (error) {
         handleSendErrors(error.message || "Internal server error", false, 500, next);
