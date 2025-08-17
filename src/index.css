@@ -1,1 +1,256 @@
 @import "tailwindcss";
+
+:root {
+	--color-main: #2563eb;
+	--color-main-hover: #1d4ed8;
+	--color-main-light: #3b82f6;
+	--color-main-bg: #eff6ff;
+
+	--color-secondary: #9333ea;
+	--color-secondary-hover: #7e22ce;
+	--color-secondary-light: #a855f7;
+	--color-secondary-bg: #faf5ff;
+
+	--color-bg: #f9fafb;
+	--color-bg-dark: #111827;
+	--color-surface: #ffffff;
+	--color-border: #e5e7eb;
+
+	--color-text: #111827;
+	--color-text-light: #6b7280;
+	--color-text-inverse: #ffffff;
+
+	--color-success: #16a34a;
+	--color-success-bg: #dcfce7;
+
+	--color-error: #dc2626;
+	--color-error-bg: #fee2e2;
+
+	--color-warning: #d97706;
+	--color-warning-bg: #fef3c7;
+
+	--color-info: #0284c7;
+	--color-info-bg: #e0f2fe;
+
+	--radius-sm: 4px;
+	--radius-md: 8px;
+	--radius-lg: 12px;
+
+	--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+	--shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+	--shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.15);
+}
+
+* {
+	outline: none;
+	/* user-select: none; */
+	scroll-behavior: smooth;
+	scrollbar-color: #64748b #f8fafc;
+	scrollbar-width: thin;
+}
+/* scroll bar */
+*::-webkit-scrollbar {
+	width: 2px;
+}
+*::-webkit-scrollbar-thumb {
+	background-color: var(--game-primary);
+	border-radius: 3px;
+}
+*::-webkit-scrollbar-thumb:hover {
+	background-color: var(--game-primary-hover);
+}
+*::-webkit-scrollbar-track {
+	background-color: var(--game-card);
+}
+
+/* Base animations */
+@keyframes move-bg-1 {
+	0%,
+	100% {
+		transform: translate(0, 0);
+	}
+	50% {
+		transform: translate(50px, 50px);
+	}
+}
+@keyframes move-bg-2 {
+	0%,
+	100% {
+		transform: translate(0, 0);
+	}
+	50% {
+		transform: translate(-50px, 50px);
+	}
+}
+@keyframes move-bg-3 {
+	0%,
+	100% {
+		transform: translate(0, 0);
+	}
+	50% {
+		transform: translate(0, -50px);
+	}
+}
+
+/* Wave animations */
+@keyframes wave-1 {
+	0%,
+	100% {
+		transform: translateX(0) rotate(0deg);
+	}
+	50% {
+		transform: translateX(50px) rotate(2deg);
+	}
+}
+@keyframes wave-2 {
+	0%,
+	100% {
+		transform: translateX(0) rotate(0deg);
+	}
+	50% {
+		transform: translateX(-50px) rotate(-2deg);
+	}
+}
+
+/* Float animations */
+@keyframes float-1 {
+	0%,
+	100% {
+		transform: translate(0, 0) rotate(0deg);
+	}
+	50% {
+		transform: translate(30px, 30px) rotate(5deg);
+	}
+}
+@keyframes float-2 {
+	0%,
+	100% {
+		transform: translate(0, 0) rotate(0deg);
+	}
+	50% {
+		transform: translate(-40px, -20px) rotate(-5deg);
+	}
+}
+@keyframes float-3 {
+	0%,
+	100% {
+		transform: translate(0, 0);
+	}
+	50% {
+		transform: translate(20px, -30px);
+	}
+}
+
+/* Grid animation */
+@keyframes grid-pulse {
+	0%,
+	100% {
+		opacity: 0.05;
+	}
+	50% {
+		opacity: 0.1;
+	}
+}
+
+/* Blob animations */
+@keyframes blob-1 {
+	0%,
+	100% {
+		border-radius: "33% 67% 70% 30% / 30% 30% 70% 70%";
+		transform: translate(0, 0);
+	}
+	50% {
+		border-radius: "50% 50% 33% 67% / 55% 27% 73% 45%";
+		transform: translate(50px, 50px);
+	}
+}
+@keyframes blob-2 {
+	0%,
+	100% {
+		border-radius: "67% 33% 47% 53% / 37% 41% 59% 63%";
+		transform: translate(0, 0);
+	}
+	50% {
+		border-radius: "33% 67% 61% 39% / 45% 52% 48% 55%";
+		transform: translate(-50px, -30px);
+	}
+}
+@keyframes blob-3 {
+	0%,
+	100% {
+		border-radius: "63% 37% 56% 44% / 25% 66% 34% 75%";
+		transform: translate(0, 0);
+	}
+	50% {
+		border-radius: "44% 56% 32% 68% / 66% 34% 66% 34%";
+		transform: translate(30px, -40px);
+	}
+}
+
+/* Animation classes */
+.animate-move-bg-1 {
+	animation: move-bg-1 15s ease-in-out infinite;
+}
+.animate-move-bg-2 {
+	animation: move-bg-2 20s ease-in-out infinite;
+}
+.animate-move-bg-3 {
+	animation: move-bg-3 25s ease-in-out infinite;
+}
+
+.animate-wave-1 {
+	animation: wave-1 18s ease-in-out infinite;
+}
+.animate-wave-2 {
+	animation: wave-2 22s ease-in-out infinite;
+}
+
+.animate-float-1 {
+	animation: float-1 12s ease-in-out infinite;
+}
+.animate-float-2 {
+	animation: float-2 16s ease-in-out infinite;
+}
+.animate-float-3 {
+	animation: float-3 20s ease-in-out infinite;
+}
+
+.animate-grid-pulse {
+	animation: grid-pulse 8s ease-in-out infinite;
+}
+
+.animate-blob-1 {
+	animation: blob-1 20s ease-in-out infinite;
+}
+.animate-blob-2 {
+	animation: blob-2 24s ease-in-out infinite;
+}
+.animate-blob-3 {
+	animation: blob-3 28s ease-in-out infinite;
+}
+
+/* Company page */
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.animate-fade-in {
+	animation: fade-in 0.8s ease-out forwards;
+}
+.delay-100 {
+	animation-delay: 0.1s;
+}
+.delay-200 {
+	animation-delay: 0.2s;
+}
+.delay-300 {
+	animation-delay: 0.3s;
+}
