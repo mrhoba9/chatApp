@@ -11,6 +11,7 @@ import {
 } from "react-icons/fi";
 import { ImSpinner8 } from "react-icons/im";
 import { AnimatedBubbles } from "../components/AnimatedBg.jsx";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
 	const [error, setError] = useState(null);
@@ -18,8 +19,10 @@ export default function Register() {
 	const [showPopup, setShowPopup] = useState(false);
 	const [copiedKey, setCopiedKey] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
-
-	const handleSignUp = async () => {
+	const navigate = useNavigate();
+	
+	const handleSignUp = async (e) => {
+		e.preventDefault();
 		setIsLoading(true);
 		try {
 			const response = await signUp();
@@ -204,7 +207,7 @@ export default function Register() {
 
 						{/* Action button */}
 						<button
-							onClick={() => setShowPopup(false)}
+							onClick={() => navigate("/login")}
 							className="w-full py-3 bg-[var(--color-main)] text-white rounded-lg hover:bg-[var(--color-main-hover)] transition-all font-medium flex items-center justify-center gap-2"
 						>
 							<FiCheck size={18} /> I've saved my keys
