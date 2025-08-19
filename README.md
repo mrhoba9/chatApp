@@ -89,7 +89,7 @@ cd chatApp
 # 3. Install dependencies (root if needed)
 npm install
 
-# 4. Build the project (root if needed)
+# 4. Build the project
 npm run build
 
 # 5. Navigate to backend folder
