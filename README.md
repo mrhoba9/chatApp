@@ -95,9 +95,5 @@ cd backend
 # 5. Install backend dependencies
 npm install
 
-# 6. Create .env file inside backend with:
-#    MONGO_URI=your_mongodb_connection_string
-#    JWT_SECRET=your_secret_key
-
-# 7. Start the backend server
+# 6. Start the backend server
 npm start
