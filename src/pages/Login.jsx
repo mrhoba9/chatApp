@@ -26,7 +26,7 @@ export default function Login() {
 			const response = await signIn(key);
 			console.log(response);
 			alert(response.message);
-			// navigate("/dashboard");
+			navigate("/dashboard");
 		} catch (err) {
 			setError(
 				err?.response?.message || "Invalid private key. Please try again."

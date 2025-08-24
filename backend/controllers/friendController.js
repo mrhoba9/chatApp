@@ -42,7 +42,7 @@ export const outgoingRequest = async (req, res, next) => {
         receiver.incomingRequests.push({ publicKey: senderPublicKey});
         await receiver.save();
 
-        return res.status(200).json({ message: "Friend request sent successfully." });
+        return res.status(200).json({ success: true, message: "Friend request sent successfully." });
 
     } catch (error) {
         handleSendErrors(error || "Internal server error", false, 500, next);
