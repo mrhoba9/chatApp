@@ -1,13 +1,8 @@
-import axios from "axios";
-
-const API = axios.create({
-	baseURL: "http://localhost:3000/api", // backend URL
-	withCredentials: true, // send cookies (token)
-});
+import API from "./index.js";
 
 export const signUp = async () => {
-    const res = await API.post("/auth/signup");
-    return res.data;
+	const res = await API.post("/auth/signup");
+	return res.data;
 };
 
 export const signIn = async (privateKey) => {
@@ -15,7 +10,16 @@ export const signIn = async (privateKey) => {
 	return res.data;
 };
 
-export const signOut = async () => {
-	const res = await API.post("/auth/signout");
+export const logout = async () => {
+	const res = await API.post("/auth/logout");
 	return res.data;
 };
+
+export const checkAuth = async () => {
+	try {
+		const res = await API.get("/auth/check");
+		return res.data.exists;
+	} catch {
+		return false;
+	}
+}

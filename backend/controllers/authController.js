@@ -43,3 +43,17 @@ export const signin = async (req, res, next) => {
         handleSendErrors(error.message || "Internal server error", false, 500, next);
     }
 }
+
+// POST /api/auth/logout
+export const logout = async (req, res, next) => {
+    try {
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+        })
+        res.json({ success: true, message: "Logged out successfully" });
+    } catch (error) {
+        handleSendErrors(error.message || "Internal server error", false, 500, next);
+    }
+}

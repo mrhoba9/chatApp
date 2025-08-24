@@ -1,9 +1,4 @@
-import axios from "axios";
-
-const API = axios.create({
-    baseURL: "http://localhost:3000/api",
-    withCredentials: true,
-})
+import API from "./index.js";
 
 // send request
 export async function outgoingRequest(receiverPublicKey){
