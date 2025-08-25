@@ -11,7 +11,6 @@ export default function FriendList({ onSelectFriend, selectedFriend, setSelected
     const [noteMessage, setNoteMessage] = useState("");
     const [success, setSuccess] = useState(null);
 
-
     // list friends
     const friendList = async () => {
         try {
