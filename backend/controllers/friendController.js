@@ -176,7 +176,7 @@ export const removeFriend = async (req, res, next) => {
 
         const alreadyFriends = user.friends.some(f => f.publicKey === friendPublicKey);
         if (!alreadyFriends) {
-            return res.json({ message: "You are not friends", success: true });
+            return res.json({ message: "You are not friends", success: false });
         }
 
         user.friends = user.friends.filter(f => f.publicKey !== friendPublicKey);

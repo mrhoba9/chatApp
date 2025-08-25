@@ -82,11 +82,11 @@ export default function ChatWindow({ selectedFriend, onBack, showChat }) {
                             <FiArrowLeft size={20} />
                         </button>
                         <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[var(--color-main)] flex items-center justify-center text-[var(--color-text-inverse)] font-semibold text-sm md:text-base">
-                            {selectedFriend.publicKey.substring(0, 2).toUpperCase()}
+                            {selectedFriend.substring(0, 2).toUpperCase()}
                         </div>
                         <div className="ml-3 flex-1">
                             <h3 className="text-sm md:text-base font-medium text-[var(--color-text)] font-mono">
-                                {selectedFriend.publicKey.substring(0, 16)}...
+                                {selectedFriend.substring(0, 16)}...
                             </h3>
                         </div>
                     </div>

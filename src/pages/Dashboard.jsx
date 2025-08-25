@@ -7,20 +7,9 @@ import FriendRequests from '../components/dashboard/FriendRequests';
 import AddFriend from '../components/dashboard/AddFriend';
 
 export default function Dashboard() {
-    const [friends, setFriends] = useState([]);
-    
     const [selectedFriend, setSelectedFriend] = useState(null);
     const [activeView, setActiveView] = useState('chats');
     const [showChat, setShowChat] = useState(false);
-
-    useEffect(() => {
-        setFriends([
-            { id: 1, publicKey: 'aserere', lastMessage: '' },
-            { id: 2, publicKey: 'bngfdfd', lastMessage: '' },
-            { id: 3, publicKey: 'cvbcvbc', lastMessage: '' },
-            { id: 4, publicKey: 'dfgdfgd', lastMessage: '' },
-        ]);
-    }, []);
 
     const handleBackToFriends = () => {
         setShowChat(false);
@@ -59,18 +48,7 @@ export default function Dashboard() {
     }, [showChat]);
 
 
-    const handleRemoveFriend = async (friendId) => {
-        try {
-            setFriends(friends.filter(friend => friend.id !== friendId));
-            if (selectedFriend?.id === friendId) {
-                setSelectedFriend(null);
-                setShowChat(false);
-            }
-            console.log(`Friend removed: ${friendId}`);
-        } catch (error) {
-            console.error('Failed to remove friend:', error);
-        }
-    };
+    
 
     return (
         <div className="min-h-[100dvh] bg-[var(--color-bg)] text-[var(--color-text)] relative overflow-hidden">
@@ -87,16 +65,10 @@ export default function Dashboard() {
                         <AddFriend />
 
                         <div className="flex border-b border-[var(--color-border)]">
-                            <button
-                                className={`flex-1 py-3 text-sm md:text-base font-medium flex items-center justify-center ${activeView === 'chats' ? 'text-[var(--color-main)] border-b-2 border-[var(--color-main)]' : 'text-[var(--color-text-light)]'}`}
-                                onClick={() => setActiveView('chats')}
-                            >
+                            <button className={`flex-1 py-3 text-sm md:text-base font-medium flex items-center justify-center ${activeView === 'chats' ? 'text-[var(--color-main)] border-b-2 border-[var(--color-main)]' : 'text-[var(--color-text-light)]'}`} onClick={() => setActiveView('chats')}>
                                 <FiMessageSquare className="mr-2" /> Chats
                             </button>
-                            <button
-                                className={`flex-1 py-3 text-sm md:text-base font-medium flex items-center justify-center ${activeView === 'requests' ? 'text-[var(--color-main)] border-b-2 border-[var(--color-main)]' : 'text-[var(--color-text-light)]'}`}
-                                onClick={() => setActiveView('requests')}
-                            >
+                            <button className={`flex-1 py-3 text-sm md:text-base font-medium flex items-center justify-center ${activeView === 'requests' ? 'text-[var(--color-main)] border-b-2 border-[var(--color-main)]' : 'text-[var(--color-text-light)]'}`} onClick={() => setActiveView('requests')}>
                                 <FiUserPlus className="mr-2" /> Requests
                             </button>
                         </div>
@@ -104,11 +76,11 @@ export default function Dashboard() {
                         <div className="h-full overflow-y-auto">
                             {activeView === 'chats' ? (
                                 <FriendList
-                                    friends={friends}
                                     onSelectFriend={handleSelectFriend}
                                     selectedFriend={selectedFriend}
-                                    onRemoveFriend={handleRemoveFriend}
+                                    setSelectedFriend={setSelectedFriend}
                                     showChat={showChat}
+                                    setShowChat={setShowChat}
                                 />
                             ) : (
                                 <FriendRequests />

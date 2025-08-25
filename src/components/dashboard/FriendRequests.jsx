@@ -1,14 +1,14 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { FiSearch, FiCheck, FiX, FiUsers } from 'react-icons/fi';
 import { incomingRequests, approveRequest, rejectRequest } from '../../api/friends.js';
 import { logout } from '../../api/auth.js';
+import NoteMessageStruct from '../NoteMessageStruct.jsx';
 
 export default function FriendRequests() {
     const [searchQuery, setSearchQuery] = useState('');
     const [requests, setRequests] = useState([]);
     const [noteMessage, setNoteMessage] = useState("");
     const [success, setSuccess] = useState(null);
-    const timeoutRef = useRef(null);
 
     // all incoming requests
     const incomingReqs = async () => {
@@ -32,16 +32,11 @@ export default function FriendRequests() {
             setSuccess(true);
             incomingReqs();
         } catch (error) {
-            setNoteMessage(error.response?.data?.message || `Failed to ${action === "approve" ? "approve" : "reject"} request`);
+            setNoteMessage( error.response?.data?.message || `Failed to ${action === "approve" ? "approve" : "reject"} request`);
             setSuccess(false);
-        } finally{
-            if (timeoutRef.current) clearTimeout(timeoutRef.current);
-            timeoutRef.current = setTimeout(() => {
-                setNoteMessage("");
-                setSuccess(null);
-            }, 5000);
         }
     };
+
 
     const filteredRequests = requests.filter(request =>
         request.publicKey.toLowerCase().includes(searchQuery.toLowerCase())
@@ -66,17 +61,14 @@ export default function FriendRequests() {
                 </div>
             </div>
             <div className="p-4">
-                {noteMessage && (
-                    <div
-                        className={`mb-3 px-4 py-2 rounded-md text-sm shadow-sm border
-                        ${success
-                                ? "bg-[var(--color-success-bg)] text-[var(--color-success)] border-[var(--color-success)]"
-                                : "bg-[var(--color-error-bg)] text-[var(--color-error)] border-[var(--color-error)]"
-                            }`}
-                    >
-                        {noteMessage}
-                    </div>
-                )}
+                <NoteMessageStruct
+                    message={noteMessage}
+                    success={success}
+                    onClear={() => {
+                        setNoteMessage("");
+                        setSuccess(null);
+                    }}
+                />
                 {filteredRequests.length > 0 ? (
                     <div className="space-y-4 pb-42">
                         {filteredRequests.map(request => (
