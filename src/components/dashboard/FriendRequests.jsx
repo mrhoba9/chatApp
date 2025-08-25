@@ -1,15 +1,58 @@
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { FiSearch, FiCheck, FiX, FiUsers } from 'react-icons/fi';
+import { incomingRequests, approveRequest, rejectRequest } from '../../api/friends.js';
+import { logout } from '../../api/auth.js';
 
-function FriendRequests({ requests, onApprove, onReject }) {
+export default function FriendRequests() {
     const [searchQuery, setSearchQuery] = useState('');
-    
+    const [requests, setRequests] = useState([]);
+    const [noteMessage, setNoteMessage] = useState("");
+    const [success, setSuccess] = useState(null);
+    const timeoutRef = useRef(null);
+
+    // all incoming requests
+    const incomingReqs = async () => {
+        try {
+            const res = await incomingRequests();
+            setRequests(res.incomingRequests);
+        } catch (error) {
+            console.log(error);
+            setNoteMessage(error.response?.data?.message || "sth went wrong");
+        }
+    }
+    useEffect(() => {
+        incomingReqs();
+    }, [])
+
+    // accept or reject
+    const handleRequest = async (pk, action) => {
+        try {
+            const res = action === "approve" ? await approveRequest(pk) : await rejectRequest(pk);
+            setNoteMessage(res.message);
+            setSuccess(true);
+            incomingReqs();
+        } catch (error) {
+            setNoteMessage(error.response?.data?.message || `Failed to ${action === "approve" ? "approve" : "reject"} request`);
+            setSuccess(false);
+        } finally{
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
+            timeoutRef.current = setTimeout(() => {
+                setNoteMessage("");
+                setSuccess(null);
+            }, 5000);
+        }
+    };
+
     const filteredRequests = requests.filter(request =>
         request.publicKey.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    // temp
+    const logoutbtn = async () => await logout();
+
     return (
-        <div className="bg-[var(--color-surface)] h-full overflow-y-auto border-l border-[var(--color-border)]">
+        <div className="bg-[var(--color-surface)] h-full overflow-y-auto border-l border-[var(--color-border)] scrollbar-hide">
+            <button onClick={logoutbtn}>logout</button>
             <div className="p-4 border-b border-[var(--color-border)] flex items-center justify-between">
                 <div className="relative w-full">
                     <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[var(--color-text-light)]" />
@@ -23,8 +66,19 @@ function FriendRequests({ requests, onApprove, onReject }) {
                 </div>
             </div>
             <div className="p-4">
+                {noteMessage && (
+                    <div
+                        className={`mb-3 px-4 py-2 rounded-md text-sm shadow-sm border
+                        ${success
+                                ? "bg-[var(--color-success-bg)] text-[var(--color-success)] border-[var(--color-success)]"
+                                : "bg-[var(--color-error-bg)] text-[var(--color-error)] border-[var(--color-error)]"
+                            }`}
+                    >
+                        {noteMessage}
+                    </div>
+                )}
                 {filteredRequests.length > 0 ? (
-                    <div className="space-y-4">
+                    <div className="space-y-4 pb-42">
                         {filteredRequests.map(request => (
                             <div key={request.id} className="p-3 border border-[var(--color-border)] rounded-lg bg-[var(--color-bg)]">
                                 <div className="flex items-center justify-between">
@@ -33,20 +87,20 @@ function FriendRequests({ requests, onApprove, onReject }) {
                                             {request.publicKey.substring(0, 2).toUpperCase()}
                                         </div>
                                         <div className="ml-3">
-                                            <h3 className="text-sm font-medium text-[var(--color-text)] font-mono">{request.publicKey.substring(0, 12)}...</h3>
-                                            <p className="text-xs text-[var(--color-text-light)]">Want to be your friend</p>
+                                            <h3 className="text-sm font-medium text-[var(--color-text)] font-mono">{request.publicKey}</h3>
+                                            <p className="text-xs text-[var(--color-text-light)]">{new Date(request.timeStamp).toLocaleString()}</p>
                                         </div>
                                     </div>
                                     <div className="flex space-x-2">
                                         <button
-                                            onClick={() => onApprove(request.id)}
+                                            onClick={() => handleRequest(request.publicKey, "approve")}
                                             className="bg-[var(--color-success)] hover:bg-[#15803d] text-[var(--color-text-inverse)] p-2 rounded-full transition-colors"
                                             title="Approve request"
                                         >
                                             <FiCheck size={16} />
                                         </button>
                                         <button
-                                            onClick={() => onReject(request.id)}
+                                            onClick={() => handleRequest(request.publicKey, "reject")}
                                             className="bg-[var(--color-error)] hover:bg-[#b91c1c] text-[var(--color-text-inverse)] p-2 rounded-full transition-colors"
                                             title="Reject request"
                                         >
@@ -67,5 +121,3 @@ function FriendRequests({ requests, onApprove, onReject }) {
         </div>
     );
 }
-
-export default FriendRequests;

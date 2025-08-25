@@ -57,7 +57,7 @@ export const incomingRequests = async (req, res, next) => {
         if (!user) {
             return handleSendErrors("User not found", false, 404, next);
         }
-        res.json({ success: true, incomingRequests: user.incomingRequests.map(req => req.publicKey)});
+        res.json({ success: true, incomingRequests: user.incomingRequests});
     } catch (error) {
         handleSendErrors(error || "Internal server error", false, 500, next);
     }

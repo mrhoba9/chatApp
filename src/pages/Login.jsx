@@ -23,10 +23,9 @@ export default function Login() {
 		setIsLoading(true);
 		setError("");
 		try {
-			const response = await signIn(key);
-			console.log(response);
-			alert(response.message);
-			navigate("/dashboard");
+			await signIn(key);
+			window.location.reload();
+			// navigate("/dashboard", { replace: true });
 		} catch (err) {
 			setError(
 				err?.response?.message || "Invalid private key. Please try again."

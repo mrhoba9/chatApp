@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema({
 	incomingRequests: [
 		{
 			publicKey: String,
+			timeStamp: {type: Date, default: Date.now}
 		},
 	],
 

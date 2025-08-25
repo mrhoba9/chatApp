@@ -8,7 +8,7 @@ import AddFriend from '../components/dashboard/AddFriend';
 
 export default function Dashboard() {
     const [friends, setFriends] = useState([]);
-    const [requests, setRequests] = useState([]);
+    
     const [selectedFriend, setSelectedFriend] = useState(null);
     const [activeView, setActiveView] = useState('chats');
     const [showChat, setShowChat] = useState(false);
@@ -19,11 +19,6 @@ export default function Dashboard() {
             { id: 2, publicKey: 'bngfdfd', lastMessage: '' },
             { id: 3, publicKey: 'cvbcvbc', lastMessage: '' },
             { id: 4, publicKey: 'dfgdfgd', lastMessage: '' },
-        ]);
-
-        setRequests([
-            { id: 101, publicKey: 'ewrwerw' },
-            { id: 102, publicKey: 'fghfghf' },
         ]);
     }, []);
 
@@ -63,30 +58,6 @@ export default function Dashboard() {
         };
     }, [showChat]);
 
-
-    const handleApproveRequest = async (requestId) => {
-        try {
-            const approvedRequest = requests.find(req => req.id === requestId);
-            setFriends([...friends, {
-                id: Date.now(),
-                publicKey: approvedRequest.publicKey,
-                lastMessage: ""
-            }]);
-            setRequests(requests.filter(req => req.id !== requestId));
-            console.log(`Request approved: ${requestId}`);
-        } catch (error) {
-            console.error('Failed to approve request:', error);
-        }
-    };
-
-    const handleRejectRequest = async (requestId) => {
-        try {
-            setRequests(requests.filter(req => req.id !== requestId));
-            console.log(`Request rejected: ${requestId}`);
-        } catch (error) {
-            console.error('Failed to reject request:', error);
-        }
-    };
 
     const handleRemoveFriend = async (friendId) => {
         try {
@@ -140,11 +111,7 @@ export default function Dashboard() {
                                     showChat={showChat}
                                 />
                             ) : (
-                                <FriendRequests
-                                    requests={requests}
-                                    onApprove={handleApproveRequest}
-                                    onReject={handleRejectRequest}
-                                />
+                                <FriendRequests />
                             )}
                         </div>
                     </div>
